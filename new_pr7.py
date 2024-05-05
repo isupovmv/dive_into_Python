@@ -1,1 +1,1 @@
-#https://github.com/isupovmv/dive_into_Python.git
+#https://github.com/isupovmv/dive_into_Pyth
