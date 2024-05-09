@@ -21,11 +21,13 @@ def tree_dir(directory: str):
     print(directory)
     for i, f in enumerate(os.listdir(directory)):
         print(f'{i} - {f}')
-        
+
         if os.path.isfile(f):
-            print(f'{i} - {f} seze {os.path.getsize(f)}')
-        elif os.path.isdir(path):
+            s = os.path.getsize(f)
+            print(f'{i} - {f} size {s}')
+        elif os.path.isdir(f):
             tree_dir(f)
+            #os.chdir('..') # подняться на уровень выше
 
 
 # tree_dir(pathlib.Path(__file__))
