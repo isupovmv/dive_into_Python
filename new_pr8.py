@@ -18,16 +18,25 @@ sl = {}
 
 
 def tree_dir(directory: str):
-    print(directory)
-    for i, f in enumerate(os.listdir(directory)):
-        print(f'{i} - {f}')
 
-        if os.path.isfile(f):
-            s = os.path.getsize(f)
-            print(f'{i} - {f} size {s}')
-        elif os.path.isdir(f):
-            tree_dir(f)
+    print('in: ', directory)
+
+    for i, f in enumerate(os.listdir(directory)):
+
+        full_path = os.path.join(directory, f)
+
+        if os.path.isfile(full_path):
+            s = os.path.getsize(full_path)
+            print(f'file: {i} - {f}  Size: {s}')
+        elif os.path.isdir(full_path):
+            s = 0
+            print(f'dir: {i} - {f}  Size: {s}')
+            tree_dir(full_path)
+            s += 1
             #os.chdir('..') # подняться на уровень выше
+        else:
+            s = 0
+            print(f'non: {i} - {f}  Size: {s}')
 
 
 # tree_dir(pathlib.Path(__file__))
