@@ -1,6 +1,7 @@
 '''Условие
 1. Решить задачи, которые не успели решить на семинаре.
-2. Напишите функцию, которая получает на вход директорию и рекурсивно обходит её и все вложенные директории. Результаты обхода сохраните в файлы json, csv и pickle.
+2. Напишите функцию, которая получает на вход директорию и рекурсивно обходит её и все вложенные директории.
+Результаты обхода сохраните в файлы json, csv и pickle.
     Для дочерних объектов указывайте родительскую директорию.
     Для каждого объекта укажите файл это или директория.
     Для файлов сохраните его размер в байтах, а для директорий размер файлов в ней с учётом всех вложенных файлов и директорий.
@@ -9,16 +10,18 @@
 
 # 2
 import json
+import csv
+import pickle
 import os
-import pathlib
-
-l = []
-l_comp = []
-sl = {}
 
 
-def tree_dir(directory: str):
+l_data = []
+frmt = ['path', 'name', 'type', 'size']
 
+
+def tree_dir(directory: str, sum_size=0):
+
+    sl = {}
     print('in: ', directory)
 
     for i, f in enumerate(os.listdir(directory)):
@@ -27,37 +30,25 @@ def tree_dir(directory: str):
 
         if os.path.isfile(full_path):
             s = os.path.getsize(full_path)
+            sum_size += s
             print(f'file: {i} - {f}  Size: {s}')
+            sl = {frmt[0]: directory, frmt[1]: f, frmt[2]: 'F', frmt[3]: s}
         elif os.path.isdir(full_path):
-            s = 0
-            print(f'dir: {i} - {f}  Size: {s}')
-            tree_dir(full_path)
-            s += 1
-            #os.chdir('..') # подняться на уровень выше
+            print(f'dir: {i} - {f}')
+            tree_dir(full_path, sum_size)
+            sl = {frmt[0]: directory, frmt[1]: f, frmt[2]: 'D', frmt[3]: sum_size}
         else:
-            s = 0
-            print(f'non: {i} - {f}  Size: {s}')
+            print(f'none object: {i} - {f}')
+
+        l_data.append(sl)
+        #return sum_size
 
 
 # tree_dir(pathlib.Path(__file__))
 tree_dir(os.getcwd())
+#print(l_data)
 
-'''
-        with open("pr5_7.txt", "r", encoding="utf-8") as f:
-            sum_aver = i = 0
-            for line in f:
-                l = line.split(" ")
-        
-                sum_n = float(l[2]) - float(l[3])
-                if sum_n > 0:
-                    sum_aver = sum_aver + sum_n
-                    i += 1
-        
-                sl[l[0]] = sum_n
-            l_comp.append(sl)
-            l_comp.append({"average_profit": sum_aver / i})
-        print(l_comp)
-        
-        with open("pr5_7.json", "w") as f:
-            json.dump(l_comp, f)
-'''
+
+# сохраним в json
+with open("new_pr8.json", "w") as f:
+    json.dump(l_data, f)
