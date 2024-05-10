@@ -44,11 +44,20 @@ def tree_dir(directory: str, sum_size=0):
         #return sum_size
 
 
-# tree_dir(pathlib.Path(__file__))
 tree_dir(os.getcwd())
-#print(l_data)
 
+# сохраним в json, csv, pickle
+with (open('new_pr8.json', 'w') as f_json,
+    open('new_pr8.csv', 'w', newline='', encoding='utf-8') as f_csv,
+    open('new_pr8.pickle', 'wb') as f_pickle):
 
-# сохраним в json
-with open("new_pr8.json", "w") as f:
-    json.dump(l_data, f)
+    #json
+    json.dump(l_data, f_json, indent=2)
+
+    #csv
+    file_writer = csv.DictWriter(f_csv, delimiter=',', lineterminator="\r", fieldnames=frmt)
+    file_writer.writeheader()
+    file_writer.writerows(l_data)
+
+    #pickle
+    pickle.dump(l_data, f_pickle)
