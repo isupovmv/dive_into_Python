@@ -41,7 +41,6 @@ def tree_dir(directory: str, sum_size=0):
             print(f'none object: {i} - {f}')
 
         l_data.append(sl)
-        #return sum_size
 
 
 tree_dir(os.getcwd())
@@ -51,13 +50,31 @@ with (open('new_pr8.json', 'w') as f_json,
     open('new_pr8.csv', 'w', newline='', encoding='utf-8') as f_csv,
     open('new_pr8.pickle', 'wb') as f_pickle):
 
-    #json
+    # json
     json.dump(l_data, f_json, indent=2)
 
-    #csv
+    # csv
     file_writer = csv.DictWriter(f_csv, delimiter=',', lineterminator="\r", fieldnames=frmt)
     file_writer.writeheader()
     file_writer.writerows(l_data)
 
-    #pickle
+    # pickle
     pickle.dump(l_data, f_pickle)
+
+# 3 из практического урока
+'''
+создание из файла txt нового файла json
+Имена пишите с большой буквы.
+Каждую пару сохраняйте с новой строки.
+'''
+
+def txt_to_json(txt_file: str, json_file: str):
+    with (open(txt_file, 'r', encoding='utf-8') as f_txt,
+         open(json_file, "w", encoding='utf-8') as f_json):
+
+        my_dict = {}
+        for line in f_txt:
+            key, val = line.split(': ')
+            my_dict[key.title()] = int(val)
+
+        json.dump(my_dict, f_json, separators=(',\n', ':'))
